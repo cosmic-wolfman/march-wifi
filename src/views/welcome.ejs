@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Welcome - WiFi Access Granted">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="welcome-card">
+            <header class="header">
+                <svg class="success-checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                    <circle class="success-checkmark-circle" cx="26" cy="26" r="25" fill="none"/>
+                    <path class="success-checkmark-check" fill="none" d="m14.1 27.2l7.1 7.2 16.7-16.8"/>
+                </svg>
+                <h1>Welcome!</h1>
+                <p class="subtitle">You are now connected to the network</p>
+            </header>
+
+            <div class="welcome-content">
+                <div class="info-box">
+                    <h2>🌐 Connection Status</h2>
+                    <div class="status-indicator">
+                        <span class="status-dot connected"></span>
+                        <span class="status-text">Connected & Active</span>
+                    </div>
+                    <p class="connection-details">
+                        Your session is active and you have full network access.
+                        <br>
+                        <small class="session-id">Session ID: <%= userId %></small>
+                    </p>
+                </div>
+
+                <div class="tips-box">
+                    <h3>📋 Network Usage Guidelines</h3>
+                    <div class="guidelines-grid">
+                        <div class="guideline-item">
+                            <span class="guideline-icon">🔒</span>
+                            <span>Use the network responsibly</span>
+                        </div>
+                        <div class="guideline-item">
+                            <span class="guideline-icon">🚫</span>
+                            <span>Do not share your credentials</span>
+                        </div>
+                        <div class="guideline-item">
+                            <span class="guideline-icon">🆘</span>
+                            <span>Report any issues to IT support</span>
+                        </div>
+                        <div class="guideline-item">
+                            <span class="guideline-icon">⏰</span>
+                            <span>Session expires after 30 minutes of inactivity</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <button onclick="window.close()" class="btn btn-secondary">
+                        Close Window
+                    </button>
+                    <button onclick="location.href='/auth/logout'" class="btn btn-outline">
+                        Logout
+                    </button>
+                </div>
+            </div>
+
+            <footer class="footer">
+                <p class="footer-text">
+                    Need help? Contact IT Support at support@example.com
+                </p>
+            </footer>
+        </div>
+    </div>
+
+    <script>
+        // Redirect disabled for now
+        // setTimeout(() => {
+        //     window.location.href = '<%= process.env.SUCCESS_REDIRECT_URL || "http://192.168.1.1" %>';
+        // }, 5000);
+    </script>
+</body>
+</html>

@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <style>
+        :root {
+            --primary-color: #1f2937;
+            --secondary-color: #3b82f6;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --border-color: #e5e7eb;
+            --text-color: #1f2937;
+            --text-muted: #6b7280;
+            --bg-color: #f9fafb;
+            --card-bg: white;
+            --shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            --border-radius: 8px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-color);
+            color: var(--text-color);
+        }
+
+        .header {
+            background: white;
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .nav {
+            background: white;
+            border-bottom: 1px solid var(--border-color);
+            padding: 0 2rem;
+        }
+
+        .nav ul {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav a {
+            display: block;
+            padding: 1rem 0;
+            color: var(--text-muted);
+            text-decoration: none;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .nav a:hover,
+        .nav a.active {
+            color: var(--secondary-color);
+            border-bottom-color: var(--secondary-color);
+        }
+
+        .main {
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .filter-bar {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .filter-bar input,
+        .filter-bar select {
+            padding: 0.5rem;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 0.875rem;
+        }
+
+        .filter-bar button {
+            padding: 0.5rem 1rem;
+            background: var(--secondary-color);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .table-container {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .table th,
+        .table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .table th {
+            font-weight: 600;
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            background: #f8fafc;
+        }
+
+        .table tr:hover {
+            background: #f8fafc;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 4px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.2s;
+        }
+
+        .btn-sm {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.75rem;
+        }
+
+        .btn-danger {
+            background: var(--danger-color);
+            color: white;
+        }
+
+        .btn-warning {
+            background: var(--warning-color);
+            color: white;
+        }
+
+        .badge {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.75rem;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+
+        .badge-success {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .badge-danger {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 2rem;
+        }
+
+        .pagination a,
+        .pagination span {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            text-decoration: none;
+            color: var(--text-color);
+            font-size: 0.875rem;
+        }
+
+        .pagination a:hover {
+            background: var(--bg-color);
+        }
+
+        .pagination .active {
+            background: var(--secondary-color);
+            color: white;
+            border-color: var(--secondary-color);
+        }
+
+        .text-muted {
+            color: var(--text-muted);
+        }
+
+        .text-sm {
+            font-size: 0.875rem;
+        }
+
+        .actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .table {
+                font-size: 0.875rem;
+            }
+            
+            .table th,
+            .table td {
+                padding: 0.5rem;
+            }
+            
+            .filter-bar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .filter-bar input,
+            .filter-bar select,
+            .filter-bar button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>User Management</h1>
+        <div class="header-actions">
+            <span class="text-muted">Welcome, <%= adminUsername %></span>
+            <form method="POST" action="/admin/logout" style="display: inline;">
+                <button type="submit" class="btn btn-sm" style="background: var(--text-muted); color: white;">Logout</button>
+            </form>
+        </div>
+    </header>
+
+    <nav class="nav">
+        <ul>
+            <li><a href="/admin/dashboard">Dashboard</a></li>
+            <li><a href="/admin/users" class="active">Users</a></li>
+            <li><a href="/admin/network">Network</a></li>
+            <li><a href="/admin/analytics">Analytics</a></li>
+            <li><a href="/admin/logs">Logs</a></li>
+            <li><a href="/admin/settings">Settings</a></li>
+        </ul>
+    </nav>
+
+    <main class="main">
+        <div class="filter-bar">
+            <form method="GET" action="/admin/users" style="display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; flex: 1;">
+                <input type="text" name="search" placeholder="Search by name or email..." value="<%= search %>" style="flex: 1; min-width: 200px;">
+                <select name="squadron">
+                    <option value="">All Squadrons</option>
+                    <% squadrons.forEach(sq => { %>
+                        <option value="<%= sq.squadron %>" <%= squadron === sq.squadron ? 'selected' : '' %>><%= sq.squadron %></option>
+                    <% }) %>
+                </select>
+                <button type="submit">Search</button>
+                <% if (search || squadron) { %>
+                    <a href="/admin/users" class="btn" style="background: var(--text-muted); color: white;">Clear</a>
+                <% } %>
+            </form>
+            <div class="text-muted">
+                Total Users: <strong><%= total %></strong>
+            </div>
+        </div>
+
+        <div class="table-container">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Squadron</th>
+                        <th>Email</th>
+                        <th>MAC Address</th>
+                        <th>Status</th>
+                        <th>Registered</th>
+                        <th>Last Seen</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% if (users.length > 0) { %>
+                        <% users.forEach(user => { %>
+                            <tr>
+                                <td><strong><%= user.name %></strong></td>
+                                <td><%= user.squadron %></td>
+                                <td class="text-sm"><%= user.email %></td>
+                                <td class="text-sm text-muted"><%= user.mac_address || 'Not detected' %></td>
+                                <td>
+                                    <% if (user.status === 'active') { %>
+                                        <span class="badge badge-success">Active</span>
+                                    <% } else if (user.status === 'revoked') { %>
+                                        <span class="badge badge-danger">Revoked</span>
+                                    <% } else { %>
+                                        <span class="badge"><%= user.status %></span>
+                                    <% } %>
+                                </td>
+                                <td class="text-sm text-muted">
+                                    <%= new Date(user.created_at).toLocaleDateString() %>
+                                </td>
+                                <td class="text-sm text-muted">
+                                    <%= new Date(user.last_seen_at).toLocaleDateString() %>
+                                </td>
+                                <td>
+                                    <div class="actions">
+                                        <% if (user.status === 'active' && user.mac_address) { %>
+                                            <button class="btn btn-warning btn-sm" onclick="revokeAccess('<%= user.id %>')">Revoke</button>
+                                        <% } %>
+                                        <button class="btn btn-danger btn-sm" onclick="deleteUser('<%= user.id %>')">Delete</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        <% }) %>
+                    <% } else { %>
+                        <tr>
+                            <td colspan="8" style="text-align: center; padding: 3rem;">
+                                <p class="text-muted">No users found.</p>
+                            </td>
+                        </tr>
+                    <% } %>
+                </tbody>
+            </table>
+        </div>
+
+        <% if (totalPages > 1) { %>
+            <div class="pagination">
+                <% if (page > 1) { %>
+                    <a href="/admin/users?page=<%= page - 1 %>&search=<%= search %>&squadron=<%= squadron %>">Previous</a>
+                <% } %>
+                
+                <% for (let i = 1; i <= totalPages; i++) { %>
+                    <% if (i === page) { %>
+                        <span class="active"><%= i %></span>
+                    <% } else if (i === 1 || i === totalPages || (i >= page - 2 && i <= page + 2)) { %>
+                        <a href="/admin/users?page=<%= i %>&search=<%= search %>&squadron=<%= squadron %>"><%= i %></a>
+                    <% } else if (i === page - 3 || i === page + 3) { %>
+                        <span>...</span>
+                    <% } %>
+                <% } %>
+                
+                <% if (page < totalPages) { %>
+                    <a href="/admin/users?page=<%= page + 1 %>&search=<%= search %>&squadron=<%= squadron %>">Next</a>
+                <% } %>
+            </div>
+        <% } %>
+    </main>
+
+    <script>
+        function revokeAccess(userId) {
+            if (confirm('Are you sure you want to revoke network access for this user?')) {
+                fetch(`/admin/users/${userId}/revoke`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Access revoked successfully');
+                        window.location.reload();
+                    } else {
+                        alert('Error: ' + (data.error || 'Failed to revoke access'));
+                    }
+                })
+                .catch(error => {
+                    alert('Error: ' + error.message);
+                });
+            }
+        }
+
+        function deleteUser(userId) {
+            if (confirm('Are you sure you want to delete this user? This action cannot be undone.')) {
+                fetch(`/admin/users/${userId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('User deleted successfully');
+                        window.location.reload();
+                    } else {
+                        alert('Error: ' + (data.error || 'Failed to delete user'));
+                    }
+                })
+                .catch(error => {
+                    alert('Error: ' + error.message);
+                });
+            }
+        }
+    </script>
+</body>
+</html>

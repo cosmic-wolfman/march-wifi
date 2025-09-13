@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <style>
+        :root {
+            --primary-color: #1f2937;
+            --secondary-color: #3b82f6;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --border-color: #e5e7eb;
+            --text-color: #1f2937;
+            --text-muted: #6b7280;
+            --bg-color: #f9fafb;
+            --card-bg: white;
+            --shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            --border-radius: 8px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-color);
+            color: var(--text-color);
+        }
+
+        .header {
+            background: white;
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .nav {
+            background: white;
+            border-bottom: 1px solid var(--border-color);
+            padding: 0 2rem;
+        }
+
+        .nav ul {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav a {
+            display: block;
+            padding: 1rem 0;
+            color: var(--text-muted);
+            text-decoration: none;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .nav a:hover,
+        .nav a.active {
+            color: var(--secondary-color);
+            border-bottom-color: var(--secondary-color);
+        }
+
+        .main {
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+        }
+
+        .stat-card h3 {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.025em;
+        }
+
+        .stat-card .number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-color);
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .card-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-header h2 {
+            font-size: 1.125rem;
+            font-weight: 600;
+        }
+
+        .card-content {
+            padding: 1.5rem;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .table th,
+        .table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .table th {
+            font-weight: 600;
+            color: var(--text-muted);
+            font-size: 0.875rem;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 4px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: var(--secondary-color);
+            color: white;
+        }
+
+        .btn-danger {
+            background: var(--danger-color);
+            color: white;
+        }
+
+        .btn-sm {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.75rem;
+        }
+
+        .badge {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.75rem;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+
+        .badge-success {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .badge-warning {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .text-muted {
+            color: var(--text-muted);
+        }
+
+        .text-sm {
+            font-size: 0.875rem;
+        }
+
+        @media (max-width: 768px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .main {
+                padding: 1rem;
+            }
+            
+            .header {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>Admin Dashboard</h1>
+        <div class="header-actions">
+            <span class="text-muted">Welcome, <%= adminUsername %></span>
+            <form method="POST" action="/admin/logout" style="display: inline;">
+                <button type="submit" class="btn btn-sm" style="background: var(--text-muted); color: white;">Logout</button>
+            </form>
+        </div>
+    </header>
+
+    <nav class="nav">
+        <ul>
+            <li><a href="/admin/dashboard" class="active">Dashboard</a></li>
+            <li><a href="/admin/users">Users</a></li>
+            <li><a href="/admin/network">Network</a></li>
+            <li><a href="/admin/analytics">Analytics</a></li>
+            <li><a href="/admin/logs">Logs</a></li>
+            <li><a href="/admin/settings">Settings</a></li>
+        </ul>
+    </nav>
+
+    <main class="main">
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>Total Users</h3>
+                <div class="number"><%= stats.total_users || 0 %></div>
+            </div>
+            <div class="stat-card">
+                <h3>Active Sessions</h3>
+                <div class="number"><%= activeSessions.length %></div>
+            </div>
+            <div class="stat-card">
+                <h3>Squadrons</h3>
+                <div class="number"><%= stats.total_squadrons || 0 %></div>
+            </div>
+            <div class="stat-card">
+                <h3>Active Today</h3>
+                <div class="number"><%= stats.active_24h || 0 %></div>
+            </div>
+        </div>
+
+        <div class="content-grid">
+            <div class="card">
+                <div class="card-header">
+                    <h2>Recent Registrations</h2>
+                    <a href="/admin/users" class="btn btn-primary btn-sm">View All</a>
+                </div>
+                <div class="card-content">
+                    <% if (recentUsers.length > 0) { %>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Squadron</th>
+                                    <th>Email</th>
+                                    <th>Registered</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% recentUsers.forEach(user => { %>
+                                    <tr>
+                                        <td><%= user.name %></td>
+                                        <td><%= user.squadron %></td>
+                                        <td class="text-muted text-sm"><%= user.email %></td>
+                                        <td class="text-muted text-sm">
+                                            <%= new Date(user.created_at).toLocaleDateString() %>
+                                        </td>
+                                    </tr>
+                                <% }) %>
+                            </tbody>
+                        </table>
+                    <% } else { %>
+                        <p class="text-muted">No users registered yet.</p>
+                    <% } %>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2>Active Sessions</h2>
+                </div>
+                <div class="card-content">
+                    <% if (activeSessions.length > 0) { %>
+                        <div style="max-height: 400px; overflow-y: auto;">
+                            <% activeSessions.forEach(session => { %>
+                                <div style="padding: 0.75rem 0; border-bottom: 1px solid var(--border-color);">
+                                    <div style="font-weight: 500;"><%= session.name %></div>
+                                    <div class="text-muted text-sm"><%= session.squadron %></div>
+                                    <div class="text-muted text-sm">
+                                        Expires: <%= new Date(session.expires_at).toLocaleString() %>
+                                    </div>
+                                </div>
+                            <% }) %>
+                        </div>
+                    <% } else { %>
+                        <p class="text-muted">No active sessions.</p>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Auto-refresh dashboard every 30 seconds
+        setInterval(() => {
+            fetch('/admin/api/stats')
+                .then(response => response.json())
+                .then(data => {
+                    // Update stats if needed
+                })
+                .catch(error => console.error('Error updating stats:', error));
+        }, 30000);
+    </script>
+</body>
+</html>

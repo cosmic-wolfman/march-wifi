@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <style>
+        :root {
+            --primary-color: #1f2937;
+            --secondary-color: #3b82f6;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --border-color: #e5e7eb;
+            --text-color: #1f2937;
+            --text-muted: #6b7280;
+            --bg-color: #f9fafb;
+            --card-bg: white;
+            --shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            --border-radius: 8px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-color);
+            color: var(--text-color);
+        }
+
+        .header {
+            background: white;
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .nav {
+            background: white;
+            border-bottom: 1px solid var(--border-color);
+            padding: 0 2rem;
+        }
+
+        .nav ul {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav a {
+            display: block;
+            padding: 1rem 0;
+            color: var(--text-muted);
+            text-decoration: none;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .nav a:hover,
+        .nav a.active {
+            color: var(--secondary-color);
+            border-bottom-color: var(--secondary-color);
+        }
+
+        .main {
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .filter-bar {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .filter-bar select,
+        .filter-bar input {
+            padding: 0.5rem;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 0.875rem;
+        }
+
+        .filter-bar button {
+            padding: 0.5rem 1rem;
+            background: var(--secondary-color);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .log-container {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .log-header {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .log-content {
+            max-height: 600px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.875rem;
+            line-height: 1.6;
+        }
+
+        .log-entry {
+            padding: 0.75rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+
+        .log-entry:hover {
+            background: #f8fafc;
+        }
+
+        .log-level {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.75rem;
+            border-radius: 4px;
+            font-weight: 600;
+            text-transform: uppercase;
+            min-width: 60px;
+            text-align: center;
+        }
+
+        .log-level-error {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .log-level-warn {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .log-level-info {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .log-level-debug {
+            background: #e5e7eb;
+            color: #374151;
+        }
+
+        .log-timestamp {
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            min-width: 150px;
+        }
+
+        .log-message {
+            flex: 1;
+            word-break: break-word;
+        }
+
+        .text-muted {
+            color: var(--text-muted);
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 4px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.2s;
+        }
+
+        .btn-sm {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.75rem;
+        }
+
+        .empty-state {
+            padding: 3rem;
+            text-align: center;
+            color: var(--text-muted);
+        }
+
+        @media (max-width: 768px) {
+            .filter-bar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .filter-bar select,
+            .filter-bar input,
+            .filter-bar button {
+                width: 100%;
+            }
+            
+            .log-entry {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .main {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>System Logs</h1>
+        <div class="header-actions">
+            <span class="text-muted">Welcome, <%= adminUsername %></span>
+            <form method="POST" action="/admin/logout" style="display: inline;">
+                <button type="submit" class="btn btn-sm" style="background: var(--text-muted); color: white;">Logout</button>
+            </form>
+        </div>
+    </header>
+
+    <nav class="nav">
+        <ul>
+            <li><a href="/admin/dashboard">Dashboard</a></li>
+            <li><a href="/admin/users">Users</a></li>
+            <li><a href="/admin/network">Network</a></li>
+            <li><a href="/admin/analytics">Analytics</a></li>
+            <li><a href="/admin/logs" class="active">Logs</a></li>
+            <li><a href="/admin/settings">Settings</a></li>
+        </ul>
+    </nav>
+
+    <main class="main">
+        <div class="filter-bar">
+            <form method="GET" action="/admin/logs" style="display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; flex: 1;">
+                <select name="level">
+                    <option value="">All Levels</option>
+                    <option value="error" <%= currentLevel === 'error' ? 'selected' : '' %>>Error</option>
+                    <option value="warn" <%= currentLevel === 'warn' ? 'selected' : '' %>>Warning</option>
+                    <option value="info" <%= currentLevel === 'info' ? 'selected' : '' %>>Info</option>
+                    <option value="debug" <%= currentLevel === 'debug' ? 'selected' : '' %>>Debug</option>
+                </select>
+                <select name="limit">
+                    <option value="100" <%= limit === 100 ? 'selected' : '' %>>Last 100</option>
+                    <option value="250" <%= limit === 250 ? 'selected' : '' %>>Last 250</option>
+                    <option value="500" <%= limit === 500 ? 'selected' : '' %>>Last 500</option>
+                    <option value="1000" <%= limit === 1000 ? 'selected' : '' %>>Last 1000</option>
+                </select>
+                <button type="submit">Filter</button>
+                <button type="button" onclick="window.location.reload()" style="background: var(--text-muted);">Refresh</button>
+            </form>
+            <div class="text-muted">
+                Showing <%= logs ? logs.length : 0 %> entries
+            </div>
+        </div>
+
+        <div class="log-container">
+            <div class="log-header">
+                <h2>Log Entries</h2>
+                <button class="btn btn-sm" onclick="downloadLogs()" style="background: var(--text-muted); color: white;">Download</button>
+            </div>
+            <div class="log-content">
+                <% if (logs && logs.length > 0) { %>
+                    <% logs.forEach(log => { %>
+                        <div class="log-entry">
+                            <span class="log-timestamp">
+                                <%= log.timestamp ? new Date(log.timestamp).toLocaleString() : 'N/A' %>
+                            </span>
+                            <span class="log-level log-level-<%= log.level %>">
+                                <%= log.level %>
+                            </span>
+                            <div class="log-message">
+                                <% if (log.message) { %>
+                                    <%= log.message %>
+                                <% } %>
+                                <% if (log.meta && Object.keys(log.meta).length > 0) { %>
+                                    <div style="margin-top: 0.5rem; font-size: 0.75rem; color: var(--text-muted);">
+                                        <%= JSON.stringify(log.meta) %>
+                                    </div>
+                                <% } %>
+                            </div>
+                        </div>
+                    <% }) %>
+                <% } else { %>
+                    <div class="empty-state">
+                        <p>No log entries found.</p>
+                        <p style="margin-top: 0.5rem; font-size: 0.875rem;">Try adjusting your filters or check back later.</p>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+
+        <div style="margin-top: 2rem; padding: 1rem; background: #fef3c7; border-radius: var(--border-radius); border: 1px solid #fbbf24;">
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <span style="color: #92400e; font-weight: 600;">Note:</span>
+                <span style="color: #92400e; font-size: 0.875rem;">
+                    Logs are stored in the /logs directory. For real-time monitoring, you can also use PM2 logs or system journal.
+                </span>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function downloadLogs() {
+            const logs = [];
+            document.querySelectorAll('.log-entry').forEach(entry => {
+                const timestamp = entry.querySelector('.log-timestamp').textContent.trim();
+                const level = entry.querySelector('.log-level').textContent.trim();
+                const message = entry.querySelector('.log-message').textContent.trim();
+                logs.push(`[${timestamp}] [${level}] ${message}`);
+            });
+            
+            const blob = new Blob([logs.join('\n')], { type: 'text/plain' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `captive-portal-logs-${new Date().toISOString().split('T')[0]}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+        }
+
+        // Auto-refresh every 30 seconds
+        setTimeout(() => {
+            window.location.reload();
+        }, 30000);
+    </script>
+</body>
+</html>

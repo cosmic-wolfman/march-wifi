@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <style>
+        :root {
+            --primary-color: #1f2937;
+            --secondary-color: #3b82f6;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --border-color: #e5e7eb;
+            --text-color: #1f2937;
+            --text-muted: #6b7280;
+            --bg-color: #f9fafb;
+            --card-bg: white;
+            --shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            --border-radius: 8px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-color);
+            color: var(--text-color);
+        }
+
+        .header {
+            background: white;
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .nav {
+            background: white;
+            border-bottom: 1px solid var(--border-color);
+            padding: 0 2rem;
+        }
+
+        .nav ul {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav a {
+            display: block;
+            padding: 1rem 0;
+            color: var(--text-muted);
+            text-decoration: none;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .nav a:hover,
+        .nav a.active {
+            color: var(--secondary-color);
+            border-bottom-color: var(--secondary-color);
+        }
+
+        .main {
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .card-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-header h2 {
+            font-size: 1.125rem;
+            font-weight: 600;
+        }
+
+        .card-content {
+            padding: 1.5rem;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .table th,
+        .table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .table th {
+            font-weight: 600;
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            position: sticky;
+            top: 0;
+            background: var(--card-bg);
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 4px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.2s;
+        }
+
+        .btn-sm {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.75rem;
+        }
+
+        .btn-primary {
+            background: var(--secondary-color);
+            color: white;
+        }
+
+        .btn-danger {
+            background: var(--danger-color);
+            color: white;
+        }
+
+        .badge {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.75rem;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+
+        .badge-success {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .badge-info {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .text-muted {
+            color: var(--text-muted);
+        }
+
+        .text-sm {
+            font-size: 0.875rem;
+        }
+
+        .text-mono {
+            font-family: 'Courier New', monospace;
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 0.5rem;
+        }
+
+        .status-online {
+            background: var(--success-color);
+        }
+
+        .status-offline {
+            background: var(--text-muted);
+        }
+
+        .refresh-btn {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            padding: 0.25rem 0.5rem;
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 0.75rem;
+        }
+
+        .refresh-btn:hover {
+            background: var(--bg-color);
+        }
+
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .main {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>Network Management</h1>
+        <div class="header-actions">
+            <span class="text-muted">Welcome, <%= adminUsername %></span>
+            <form method="POST" action="/admin/logout" style="display: inline;">
+                <button type="submit" class="btn btn-sm" style="background: var(--text-muted); color: white;">Logout</button>
+            </form>
+        </div>
+    </header>
+
+    <nav class="nav">
+        <ul>
+            <li><a href="/admin/dashboard">Dashboard</a></li>
+            <li><a href="/admin/users">Users</a></li>
+            <li><a href="/admin/network" class="active">Network</a></li>
+            <li><a href="/admin/analytics">Analytics</a></li>
+            <li><a href="/admin/logs">Logs</a></li>
+            <li><a href="/admin/settings">Settings</a></li>
+        </ul>
+    </nav>
+
+    <main class="main">
+        <div class="grid">
+            <div class="card">
+                <div class="card-header">
+                    <h2>Whitelisted MAC Addresses (<%= whitelistedMacs.length %>)</h2>
+                    <button class="refresh-btn" onclick="window.location.reload()">Refresh</button>
+                </div>
+                <div class="card-content">
+                    <% if (whitelistedMacs.length > 0) { %>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>MAC Address</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% whitelistedMacs.forEach(mac => { %>
+                                    <tr>
+                                        <td class="text-mono"><%= mac %></td>
+                                        <td>
+                                            <span class="badge badge-success">Whitelisted</span>
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-danger btn-sm" onclick="removeMac('<%= mac %>')">Remove</button>
+                                        </td>
+                                    </tr>
+                                <% }) %>
+                            </tbody>
+                        </table>
+                    <% } else { %>
+                        <p class="text-muted">No MAC addresses whitelisted yet.</p>
+                    <% } %>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2>DHCP Leases (<%= dhcpLeases.length %>)</h2>
+                    <button class="refresh-btn" onclick="window.location.reload()">Refresh</button>
+                </div>
+                <div class="card-content">
+                    <% if (dhcpLeases.length > 0) { %>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>IP Address</th>
+                                    <th>MAC Address</th>
+                                    <th>Hostname</th>
+                                    <th>Expires</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% dhcpLeases.forEach(lease => { %>
+                                    <tr>
+                                        <td class="text-mono"><%= lease.ip %></td>
+                                        <td class="text-mono text-sm"><%= lease.mac %></td>
+                                        <td class="text-sm"><%= lease.hostname || '-' %></td>
+                                        <td class="text-sm text-muted">
+                                            <%= lease.expires ? new Date(lease.expires).toLocaleString() : 'Never' %>
+                                        </td>
+                                    </tr>
+                                <% }) %>
+                            </tbody>
+                        </table>
+                    <% } else { %>
+                        <p class="text-muted">No active DHCP leases.</p>
+                    <% } %>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2>ARP Table (<%= arpTable.length %>)</h2>
+                    <button class="refresh-btn" onclick="window.location.reload()">Refresh</button>
+                </div>
+                <div class="card-content">
+                    <% if (arpTable.length > 0) { %>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>IP Address</th>
+                                    <th>MAC Address</th>
+                                    <th>Interface</th>
+                                    <th>State</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% arpTable.forEach(entry => { %>
+                                    <tr>
+                                        <td class="text-mono"><%= entry.ip %></td>
+                                        <td class="text-mono text-sm"><%= entry.mac %></td>
+                                        <td class="text-sm"><%= entry.interface %></td>
+                                        <td>
+                                            <% if (entry.state === 'REACHABLE' || entry.state === 'PERMANENT') { %>
+                                                <span class="status-indicator status-online"></span>
+                                                <span class="text-sm"><%= entry.state %></span>
+                                            <% } else { %>
+                                                <span class="status-indicator status-offline"></span>
+                                                <span class="text-sm text-muted"><%= entry.state %></span>
+                                            <% } %>
+                                        </td>
+                                    </tr>
+                                <% }) %>
+                            </tbody>
+                        </table>
+                    <% } else { %>
+                        <p class="text-muted">No entries in ARP table.</p>
+                    <% } %>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2>Network Statistics</h2>
+                </div>
+                <div class="card-content">
+                    <div style="display: grid; gap: 1rem;">
+                        <div style="padding: 1rem; background: var(--bg-color); border-radius: 4px;">
+                            <div class="text-muted text-sm">Total Whitelisted MACs</div>
+                            <div style="font-size: 1.5rem; font-weight: 600;"><%= whitelistedMacs.length %></div>
+                        </div>
+                        <div style="padding: 1rem; background: var(--bg-color); border-radius: 4px;">
+                            <div class="text-muted text-sm">Active DHCP Leases</div>
+                            <div style="font-size: 1.5rem; font-weight: 600;"><%= dhcpLeases.length %></div>
+                        </div>
+                        <div style="padding: 1rem; background: var(--bg-color); border-radius: 4px;">
+                            <div class="text-muted text-sm">Connected Devices</div>
+                            <div style="font-size: 1.5rem; font-weight: 600;">
+                                <%= arpTable.filter(e => e.state === 'REACHABLE' || e.state === 'PERMANENT').length %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function removeMac(mac) {
+            if (confirm(`Are you sure you want to remove ${mac} from the whitelist?`)) {
+                // In a real implementation, this would call an API endpoint
+                alert('This feature would remove the MAC address from the whitelist');
+                // fetch(`/admin/network/mac/${encodeURIComponent(mac)}`, { method: 'DELETE' })
+                //     .then(response => response.json())
+                //     .then(data => {
+                //         if (data.success) {
+                //             window.location.reload();
+                //         } else {
+                //             alert('Error: ' + (data.error || 'Failed to remove MAC'));
+                //         }
+                //     });
+            }
+        }
+
+        // Auto-refresh every 30 seconds
+        setTimeout(() => {
+            window.location.reload();
+        }, 30000);
+    </script>
+</body>
+</html>
